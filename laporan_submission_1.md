@@ -101,6 +101,15 @@ ARIMA bekerja dengan baik pada data yang memiliki pola musiman jangka pendek, te
 - Mean Absolute Error (MAE): Digunakan untuk mengukur rata-rata kesalahan prediksi terhadap harga sebenarnya.
 - Root Mean Square Error (RMSE): Digunakan untuk menekankan kesalahan prediksi besar dan memberikan gambaran seberapa jauh prediksi dari nilai aktual.
 
+## Visualisasi Prediksi
+
+### Prophet
+![Prophet](https://github.com/yosriku/Stock-Market-Analysis/blob/main/images/Prophet.png?raw=true)
+
+### Arima
+![Arima](https://github.com/yosriku/Stock-Market-Analysis/blob/main/images/Arima.png?raw=true)
+
+
 ### Hasil Evaluasi:
 
 |Metrics|Result|
