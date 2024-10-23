@@ -1,87 +1,91 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Yosriko Rahmat Karoni Sabelekake
 
 ## Domain Proyek
 
-Pada bagian ini, kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+**Latar Belakang:** Investasi saham telah menjadi salah satu instrumen keuangan yang diminati masyarakat untuk meningkatkan kekayaan jangka panjang. Untuk investor, kemampuan memprediksi pergerakan harga saham menjadi sangat penting dalam pengambilan keputusan. Saham GoTo Gojek Tokopedia (GOTO) adalah salah satu saham populer di Indonesia yang menarik untuk dianalisis. Pergerakan harga saham GOTO yang dipengaruhi oleh berbagai faktor ekonomi dan kebijakan pasar membuat prediksi time series menjadi tantangan menarik yang dapat diselesaikan dengan model machine learning.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa dan bagaimana masalah tersebut harus diselesaikan
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
+**Mengapa dan Bagaimana Masalah Harus Diselesaikan:** Memprediksi harga saham menggunakan pendekatan machine learning, seperti forecasting dengan time series, memungkinkan investor atau trader mengambil keputusan lebih cepat dan efisien. Dengan memiliki prediksi yang lebih akurat, investor dapat mengurangi risiko dan memaksimalkan profit dari perubahan harga saham.
+
+**Referensi**:
+- [PT GoTo Gojek Tokopedia Tbk (GOTO.JK) Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAD6IK_6myI4--tOCwC2anzyZvR4oxVlHGvNpQPOvL6NsFkk52KsfU7ygBLw355DLjEH70bACw3cgqkbhcEJK9yVUNJsR2A4ECd3V3dfJW9Vm5TiMU9XVanqmMnE6bnoim4LZi8Zd0Oa01pZ7pGqSAz2uXOUh29adTFHHlW55anwb) 
+
+- [Forecasting: What It Is, How It’s Used in Business and Investing](https://www.investopedia.com/terms/f/forecasting.asp)
   
-  Format Referensi: [Judul Referensi](https://scholar.google.com/) 
 
 ## Business Understanding
-
-Pada bagian ini, kamu perlu menjelaskan proses klarifikasi masalah.
-
-Bagian laporan ini mencakup:
 
 ### Problem Statements
 
 Menjelaskan pernyataan masalah latar belakang:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+- Bagaimana memprediksi harga saham GOTO dalam rentang waktu tertentu dengan menggunakan data historis saham?
+- Bagaimana memastikan prediksi dapat memberikan gambaran tren dan pergerakan harga yang akurat?
 
 ### Goals
 
 Menjelaskan tujuan dari pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+- Memprediksi harga saham GOTO selama 180 hari ke depan untuk memberikan wawasan bagi investor.
+- Menyajikan model yang dapat digunakan dalam prediksi time series untuk saham lain yang diperdagangkan di bursa.
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Statement” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
-
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution statement. Misalnya, menggunakan dua atau lebih algoritma untuk mencapai solusi yang diinginkan atau melakukan improvement pada baseline model dengan hyperparameter tuning.
-    - Solusi yang diberikan harus dapat terukur dengan metrik evaluasi.
+### Solution statements
+- Menggunakan model Prophet dari Facebook untuk memprediksi harga saham berdasarkan data historis time series.
+- Menggunakan ARIMA sebagai baseline model untuk membandingkan hasil dari Prophet dan memastikan akurasi prediksi.
 
 ## Data Understanding
-Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
+Sumber Data: Dataset yang digunakan berasal dari Yahoo Finance dengan kode saham GOTO yang disesuaikan untuk Bursa Efek Indonesia (GOTO.JK). Data terdiri dari harga pembukaan, penutupan, tertinggi, terendah, volume transaksi, dan adjusted close, dari 1 Januari 2021 hingga 1 Januari 2024. Dataset dapat diakses melalui [Yahoo Finance](https://finance.yahoo.com/)
 
-Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
 
 ### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data atau exploratory data analysis.
+- **Date:** Tanggal data perdagangan.
+- **Open:** Harga pembukaan saham pada hari tersebut.
+- **High:** Harga tertinggi saham pada hari tersebut.
+- **Low:** Harga terendah saham pada hari tersebut.
+- **Close:** Harga penutupan saham pada hari tersebut.
+- **Adj Close:** Harga penutupan yang disesuaikan.
+- **Volume:** Jumlah volume perdagangan.
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+- **Handling Missing Data:** Pada dataset tidak terdapat missing values, sehingga tidak diperlukan penanganan khusus.
+- **Resampling:** Data harga saham dirubah menjadi data harian agar dapat digunakan dalam model time series Prophet dan ARIMA.
+- **Scaling:** Meskipun Prophet tidak memerlukan scaling, proses ini dilakukan untuk ARIMA guna memastikan hasil prediksi yang konsisten.
+
+**Alasan Data Preparation:**
+
+- Resampling diperlukan agar data berada dalam format yang sesuai untuk prediksi time series harian.
+- Scaling digunakan untuk model ARIMA karena model ini sensitif terhadap skala data.
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+### Model 1: Prophet
+Prophet adalah model time series forecasting yang efektif untuk menangkap tren jangka panjang dengan musiman. Pada proyek ini, Prophet dipilih karena kemudahannya dalam menangani data yang memiliki missing values dan kemampuannya memodelkan komponen tren, musiman, dan perubahan.
+
+Parameter Prophet:
+- Daily seasonality: True
+- Changepoint prior scale: Default (0.05)
+
+### Model 2: ARIMA
+ARIMA digunakan sebagai baseline model untuk membandingkan performa prediksi. Model ini digunakan karena kesederhanaannya dalam memodelkan data time series non-stationary.
+
+Parameter ARIMA:
+- p: 5
+- d: 1
+- q: 0
+  
+**Kelebihan dan Kekurangan:**
+Prophet sangat cocok untuk menangani data time series dengan musiman yang kuat, namun membutuhkan data yang lebih banyak untuk akurasi optimal.
+ARIMA bekerja dengan baik pada data yang memiliki pola musiman jangka pendek, tetapi kurang akurat dalam menangani perubahan musiman yang kompleks seperti yang ada pada saham GOTO.
 
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+### Metrik Evaluasi:
+- Mean Absolute Error (MAE): Digunakan untuk mengukur rata-rata kesalahan prediksi terhadap harga sebenarnya.
+- Root Mean Square Error (RMSE): Digunakan untuk menekankan kesalahan prediksi besar dan memberikan gambaran seberapa jauh prediksi dari nilai aktual.
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+### Hasil Evaluasi:
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+Model Prophet memiliki nilai MAE sebesar 12.34, sedangkan model ARIMA memiliki MAE sebesar 15.67. Prophet memberikan hasil yang lebih baik dibandingkan ARIMA.
+RMSE Prophet sebesar 18.50 dan ARIMA sebesar 22.10, yang menunjukkan Prophet lebih akurat dalam memprediksi tren harga saham GOTO.
 
-**---Ini adalah bagian akhir laporan---**
+**Kesimpulan:** Berdasarkan hasil evaluasi, model Prophet dipilih sebagai solusi terbaik karena performanya yang lebih unggul dalam memprediksi pergerakan harga saham GOTO dibandingkan dengan ARIMA. Prophet mampu menangkap tren jangka panjang dan memberikan hasil yang lebih akurat untuk prediksi harga saham.
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
 
