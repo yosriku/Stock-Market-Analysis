@@ -44,35 +44,106 @@ Variabel-variabel pada dataset yang akan digunakan adalah sebagai berikut:
 - price: Harga aplikasi.
 - free: Status gratis atau berbayar.
 - description: Deskripsi aplikasi.
+- Installs: jumlah penginstallan aplikasi.
 
 ### Melihat korelasi dan pesebaran beberapa atribut
 
+#### Installs
+
+![Install Images](images/Installs.png?raw=true)
+
+#### Installs vs Rating
+
+![Rating Images](images/Score.png?raw=true)
 
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+- Cleaning Data: Membersihkan data dari nilai-nilai yang hilang dan memperbaiki format data.
+- Text Preprocessing: Melakukan pemrosesan teks pada kolom deskripsi aplikasi, seperti tokenisasi, stemming, dan menghilangkan stopwords untuk membuatnya lebih relevan dalam rekomendasi.
+- Feature Extraction: Menggunakan TF-IDF untuk mengekstrak fitur-fitur dari teks deskripsi aplikasi.
+
+$$
+\text{TF-IDF}(t,d,D) = \text{TF}(t,d) \times \text{IDF}(t,D)
+$$
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+### Top-N Recommendation
+Sistem ini mampu memberikan rekomendasi teratas berdasarkan **cosine similarity** antara aplikasi yang ada dan input query pengguna. Berikut adalah contoh fungsi yang memberikan rekomendasi teratas:
 
-## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+```python
+# Fungsi untuk rekomendasi berdasarkan input query
+def get_recommendations_from_query(query, alpha=0.7):
+    # Transformasikan query pengguna menggunakan vektor TF-IDF
+    query_tfidf = tfidf.transform([query.lower()])
+    
+    # Hitung kesamaan kosinus antara query dan semua aplikasi dalam dataset
+    cosine_sim_query = linear_kernel(query_tfidf, tfidf_matrix).flatten()
+    
+    # Buat DataFrame sementara untuk menyimpan hasil dan urutkan
+    df_temp = df_clean.copy()
+    df_temp['cosine_sim'] = cosine_sim_query
+    
+    # Sort berdasarkan cosine similarity dan installs
+    df_temp = df_temp.sort_values(by=['cosine_sim', 'installs'], ascending=[False, False])
+    
+    # Ambil top-10 aplikasi yang direkomendasikan
+    top_recommendations = df_temp[['title', 'cosine_sim', 'installs']].head(10)
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+    return top_recommendations
+```
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+**Content-Based Filtering:**
+**Deskripsi: **Menggunakan fitur konten dari aplikasi (title, genre, dan deskripsi) untuk merekomendasikan aplikasi yang relevan.
 
-**---Ini adalah bagian akhir laporan---**
+**Kelebihan:**
+- Tidak memerlukan data pengguna lain.
+- Rekomendasi lebih personal berdasarkan minat spesifik pengguna.
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+**Kekurangan:**
+- Keterbatasan dalam mengeksplorasi aplikasi yang tidak dikenal pengguna.
+- Mungkin menghasilkan rekomendasi yang terlalu mirip (serupa).
+
+## Testingg
+
+Hasil testing model menunjukkan index atau urutan aplikasi yang sesuai dengan query yang diberikan
+
+![Hasil Testing](images/Hasil.png?raw=true)
+
+## Metrik Evaluasi
+
+### 1. **Precision @ K**
+
+Definisi: Mengukur berapa banyak aplikasi relevan yang ada dalam N rekomendasi teratas.
+
+$$
+\text{Precision@K} = \frac{\text{Jumlah aplikasi relevan yang direkomendasikan}}{K}
+$$
+
+### 2. **Recall @ K**
+
+Definisi: Mengukur seberapa banyak aplikasi relevan ditemukan dari semua aplikasi relevan.
+
+$$
+\text{Recall@K} = \frac{\text{Jumlah aplikasi relevan yang direkomendasikan}}{\text{Jumlah total aplikasi relevan}}
+$$
+
+### 3. **F1-Score**
+
+Definisi: Kombinasi dari Precision dan Recall.
+
+$$
+F1 = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+$$
+
+
+### Hasil
+
+Hasil dicoba dengan menggunakan aplikasi ABC Kids - Tracing & Phonics dan HelloTalk: Pembelajaran Bahasa dengan query "Belajar Inggris"
+| Metric     | Value                |
+|------------|----------------------|
+| Precision  | 0.2                  |
+| Recall     | 1.0                  |
+| F1-Score   | 0.33333333333333337   |
+
