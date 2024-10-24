@@ -66,13 +66,10 @@ Sumber Data: Dataset yang digunakan berasal dari Yahoo Finance dengan kode saham
 ## Data Preparation
 
 - **Handling Missing Data:** Pada dataset tidak terdapat missing values, sehingga tidak diperlukan penanganan khusus.
-- **Resampling:** Data harga saham dirubah menjadi data harian agar dapat digunakan dalam model time series Prophet dan ARIMA.
-- **Scaling:** Meskipun Prophet tidak memerlukan scaling, proses ini dilakukan untuk ARIMA guna memastikan hasil prediksi yang konsisten.
 
 **Alasan Data Preparation:**
 
-- Resampling diperlukan agar data berada dalam format yang sesuai untuk prediksi time series harian.
-- Scaling digunakan untuk model ARIMA karena model ini sensitif terhadap skala data.
+- Resampling dan scaling tidak dilakukan karena hasil scraping data sudah dalam bentuk terstruktur, hanya memerlukan modifikasi nama colom atau head saja
 
 ## Modeling
 
