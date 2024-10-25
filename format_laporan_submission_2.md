@@ -158,6 +158,11 @@ Cosine similarity mengukur sudut kosinus antara dua vektor dalam ruang multidime
 
 Dalam konteks rekomendasi aplikasi, vektor ini dapat berupa representasi fitur seperti kategori, kata kunci, atau deskripsi aplikasi. Jika dua aplikasi memiliki fitur yang mirip, cosine similarity mereka akan tinggi, dan aplikasi tersebut kemungkinan besar akan direkomendasikan kepada pengguna.
 
+$$
+\text{cosine\_similarity} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \cdot \sqrt{\sum_{i=1}^{n} B_i^2}}
+$$
+
+
 **Kelebihan:**
 - Tidak memerlukan data pengguna lain.
 - Rekomendasi lebih personal berdasarkan minat spesifik pengguna.
@@ -216,10 +221,16 @@ $$
 Hasil dicoba dengan menggunakan aplikasi ABC Kids - Tracing & Phonics dan HelloTalk: Pembelajaran Bahasa dengan query "Belajar Inggris"
 | Metric     | Value                |
 |------------|----------------------|
+<<<<<<< Updated upstream
 | Precision  | 70.00%                |
 | Recall     | 100.00%                |
 | F1-Score   | 82.35%   |
 |Accuracy|100.00%|
+=======
+| Precision  | 10.00%                 |
+| Recall     | 100.00%               |
+| F1-Score   | 18.18%   |
+>>>>>>> Stashed changes
 
 **Menjawab Problem Statement:** Model ini berhasil menjawab problem statement dengan baik. Sistem rekomendasi berbasis konten mampu memberikan rekomendasi aplikasi yang relevan berdasarkan deskripsi aplikasi dan atribut lainnya, seperti rating dan genre. Selain itu, sistem ini juga dapat memberikan rekomendasi personal tanpa memerlukan data pengguna lain, sesuai dengan problem statement yang kedua.
 
