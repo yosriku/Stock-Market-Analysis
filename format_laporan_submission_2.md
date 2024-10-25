@@ -82,22 +82,28 @@ Preview data:
 | Current Ver     | 10833          | object  | 8             |
 | Android Ver     | 10838          | object  | 3             |
 
+### Installs and numbers of application corelation
+
+![Visual](images/Installs.png?raw=true)
+
+Distribusi ini dapat mencerminkan preferensi dan perilaku konsumen terkait dengan instalasi aplikasi. Sebagai contoh, sebagian besar aplikasi masuk dalam kategori "1M and above", ini bisa menunjukkan tren di mana pengguna lebih menyukai aplikasi yang sudah mapan atau populer. Hal ini menjadikan installs dapat menjadi salah satu parameter penentu rekomendasi
+
 ***
 
 ## Data Preparation
 
 - Cleaning Data: Membersihkan data dari nilai-nilai yang hilang dan memperbaiki format data.
-- Text Preprocessing: Melakukan pemrosesan teks pada kolom deskripsi aplikasi, seperti tokenisasi, stemming, dan menghilangkan stopwords untuk membuatnya lebih relevan dalam rekomendasi.
+- Minmaxscaler: menormalisasi kolom Installs, sehingga memudahkan dalam analisis atau pemodelan data dengan skala yang seragam (0-1)
+
+$$
+X_{\text{scaled}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
+$$
+
+- Text Preprocessing: Melakukan pemrosesan teks untuk menggabungkan beberapa atribut untuk selanjutnya di tokenisasi, agar query dapat menjadi lebih general dan tidak terbatas nama aplikasi
 - Feature Extraction: Menggunakan TF-IDF untuk mengekstrak fitur-fitur dari teks deskripsi aplikasi.
 
 $$
 \text{TF-IDF}(t,d,D) = \text{TF}(t,d) \times \text{IDF}(t,D)
-$$
-
-- Fungsi ini membantu menormalisasi kolom Installs, sehingga memudahkan dalam analisis atau pemodelan data dengan skala yang seragam (0-1)
-
-$$
-X_{\text{scaled}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
 $$
 
 
@@ -210,9 +216,10 @@ $$
 Hasil dicoba dengan menggunakan aplikasi ABC Kids - Tracing & Phonics dan HelloTalk: Pembelajaran Bahasa dengan query "Belajar Inggris"
 | Metric     | Value                |
 |------------|----------------------|
-| Precision  | 0.2                  |
-| Recall     | 1.0                  |
-| F1-Score   | 0.33333333333333337   |
+| Precision  | 70.00%                |
+| Recall     | 100.00%                |
+| F1-Score   | 82.35%   |
+|Accuracy|100.00%|
 
 **Menjawab Problem Statement:** Model ini berhasil menjawab problem statement dengan baik. Sistem rekomendasi berbasis konten mampu memberikan rekomendasi aplikasi yang relevan berdasarkan deskripsi aplikasi dan atribut lainnya, seperti rating dan genre. Selain itu, sistem ini juga dapat memberikan rekomendasi personal tanpa memerlukan data pengguna lain, sesuai dengan problem statement yang kedua.
 
