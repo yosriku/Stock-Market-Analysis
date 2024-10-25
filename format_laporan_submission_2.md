@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Yosriko Rahmat Karoni Sabelekake
 
 ## Project Overview
 
@@ -83,16 +83,6 @@ Preview data:
 | Android Ver     | 10838          | object  | 3             |
 
 ***
-### Melihat distribusi data
-
-#### Size & Reviews
-
-![Install Images](images/Installs.png?raw=true)
-
-#### Size & Installs
-
-![Rating Images](images/Score.png?raw=true)
-
 
 ## Data Preparation
 
@@ -104,35 +94,58 @@ $$
 \text{TF-IDF}(t,d,D) = \text{TF}(t,d) \times \text{IDF}(t,D)
 $$
 
+- Fungsi ini membantu menormalisasi kolom Installs, sehingga memudahkan dalam analisis atau pemodelan data dengan skala yang seragam (0-1)
+
+$$
+X_{\text{scaled}} = \frac{X - X_{\text{min}}}{X_{\text{max}} - X_{\text{min}}}
+$$
+
+
 ## Modeling
 
 ### Top-N Recommendation
 Sistem ini mampu memberikan rekomendasi teratas berdasarkan **cosine similarity** antara aplikasi yang ada dan input query pengguna. Berikut adalah contoh fungsi yang memberikan rekomendasi teratas:
 
 ```python
-# Fungsi untuk rekomendasi berdasarkan input query
 def get_recommendations_from_query(query, alpha=0.7):
     # Transformasikan query pengguna menggunakan vektor TF-IDF
     query_tfidf = tfidf.transform([query.lower()])
-    
+
     # Hitung kesamaan kosinus antara query dan semua aplikasi dalam dataset
     cosine_sim_query = linear_kernel(query_tfidf, tfidf_matrix).flatten()
-    
+
     # Buat DataFrame sementara untuk menyimpan hasil dan urutkan
     df_temp = df_clean.copy()
     df_temp['cosine_sim'] = cosine_sim_query
-    
-    # Sort berdasarkan cosine similarity dan installs
-    df_temp = df_temp.sort_values(by=['cosine_sim', 'installs'], ascending=[False, False])
-    
+
+    # Sort berdasarkan cosine similarity (descending) terlebih dahulu,
+    # jika sama, urutkan berdasarkan installs (descending juga)
+    df_temp = df_temp.sort_values(by=['cosine_sim', 'Installs'], ascending=[False, False])
+
     # Ambil top-10 aplikasi yang direkomendasikan
-    top_recommendations = df_temp[['title', 'cosine_sim', 'installs']].head(10)
+    top_recommendations = df_temp[['App', 'cosine_sim', 'Installs']].head(10)
 
     return top_recommendations
 ```
 
+`query` adalah parameter berupa teks yang dimasukkan oleh pengguna untuk mencari aplikasi yang relevan. Fungsi ini akan memproses teks tersebut untuk diubah menjadi representasi vektor yang dapat dihitung kesamaannya dengan aplikasi dalam dataset.
+
+Parameter `alpha`, dengan nilai default 0.7, adalah nilai berupa angka desimal (float) yang dapat digunakan untuk memberikan bobot pada skor cosine similarity atau untuk dikombinasikan dengan faktor lain (misalnya popularitas atau rating aplikasi). Meskipun dalam fungsi ini alpha belum digunakan, parameter ini bisa berguna jika nanti ingin memberikan penyesuaian bobot rekomendasi.
+
+Pada bagian `query_tfidf`, fungsi `tfidf.transform([query.lower()])` digunakan untuk mengonversi teks query menjadi vektor dengan metode TF-IDF (Term Frequency-Inverse Document Frequency), yang menghasilkan representasi query yang mencerminkan frekuensi kata penting dalam konteks dataset.
+
+Lalu, variabel `cosine_sim_query` adalah hasil dari perhitungan `linear_kernel(query_tfidf, tfidf_matrix).flatten()`, yang digunakan untuk menghitung cosine similarity antara query dan setiap aplikasi dalam dataset. Fungsi linear_kernel akan menghasilkan matriks kesamaan antara query_tfidf dan tfidf_matrix, sementara flatten mengubahnya menjadi array satu dimensi untuk memudahkan pemrosesan lebih lanjut. Nilai cosine similarity akan berkisar antara 0 hingga 1, di mana nilai yang lebih tinggi menandakan kesamaan yang lebih besar.
+
+`df_temp` adalah salinan dari dataset aplikasi asli (`df_clean`) yang digunakan untuk menampung hasil rekomendasi, dengan kolom tambahan cosine_sim yang menyimpan skor cosine similarity antara query dan setiap aplikasi dalam dataset.
+
+Dalam proses pengurutan, `df_temp` diurutkan terlebih dahulu berdasarkan kolom `cosine_sim` secara menurun (descending) agar aplikasi dengan skor cosine similarity tertinggi berada di posisi atas, yang menunjukkan bahwa aplikasi tersebut paling relevan terhadap query pengguna. Jika terdapat aplikasi dengan nilai cosine similarity yang sama, pengurutan berikutnya dilakukan berdasarkan kolom Installs dalam urutan menurun sebagai pengganti untuk menunjukkan aplikasi yang lebih populer.
+
+Bagian terakhir dari fungsi adalah variabel `top_recommendations`, yang mengambil 10 aplikasi teratas berdasarkan hasil pengurutan dan menampilkannya sebagai hasil rekomendasi untuk ditampilkan kepada pengguna.
+
+***
 **Content-Based Filtering:**
-**Deskripsi: **Menggunakan fitur konten dari aplikasi untuk merekomendasikan aplikasi yang relevan.
+
+**Deskripsi:** Menggunakan fitur konten dari aplikasi untuk merekomendasikan aplikasi yang relevan.
 
 **Cosine Similarity:**
 Cosine similarity mengukur sudut kosinus antara dua vektor dalam ruang multidimensi yang merepresentasikan atribut dari aplikasi. Nilai cosine similarity berkisar antara -1 hingga 1, di mana nilai 1 menunjukkan kesamaan yang sempurna, 0 menunjukkan tidak ada hubungan, dan -1 menunjukkan perbedaan total.
@@ -149,11 +162,23 @@ Dalam konteks rekomendasi aplikasi, vektor ini dapat berupa representasi fitur s
 
 ## TOP-N RESULT
 
-Hasil testing model menunjukkan index atau urutan aplikasi yang sesuai dengan query yang diberikan
+Hasil testing model menunjukkan index atau urutan aplikasi yang sesuai dengan query **"Coloring book moana"**
 
-![Hasil Testing](images/Hasil.png?raw=true)
+|    | App                                      | cosine_sim | Installs |
+|----|------------------------------------------|------------|----------|
+| 1  | Coloring book moana                      | 0.744337   | 500000   |
+| 2033 | Coloring book moana                    | 0.744337   | 500000   |
+| 7010 | Pixyfy: coloring by number coloring book | 0.510429   | 500000   |
+| 5628 | Coloring Book at Five Nights           | 0.502382   | 100000   |
+| 8298 | Coloring Book for Me & Mandala         | 0.484044   | 10000000 |
+| 705  | Princess Coloring Book                 | 0.457244   | 5000000  |
+| 2025 | Princess Coloring Book                 | 0.457244   | 5000000  |
+| 8   | Garden Coloring Book                    | 0.435604   | 1000000  |
+| 13  | Mandala Coloring Book                   | 0.426164   | 100000   |
+| 1771 | Color by Number – New Coloring Book    | 0.418503   | 5000000  |
 
-## Metrik Evaluasi
+
+## Evaluation
 
 ### 1. **Precision @ K**
 
