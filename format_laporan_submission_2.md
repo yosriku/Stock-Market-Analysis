@@ -10,6 +10,7 @@ Selain itu, dengan mempertimbangkan berbagai atribut aplikasi seperti rating yan
   
 Referensi: [A Recommender System for Mobile Applications of Google Play Store](https://www.researchgate.net/publication/346077457_A_Recommender_System_for_Mobile_Applications_of_Google_Play_Store) 
 
+***
 ## Business Understanding
 
 ### Problem Statements
@@ -23,36 +24,72 @@ Referensi: [A Recommender System for Mobile Applications of Google Play Store](h
 ### Solution Approach
 - Content-Based Filtering: Membandingkan atribut aplikasi dengan preferensi pengguna.
 - Tidak membutuhkan kolaborasi dengan data pengguna lain, sehingga fokus pada analisis konten aplikasi seperti yang disarankan Abdulghani dkk. (2020).
-
+***
 ## Data Understanding
-Menggunakan modul [google-play-scraper](https://pypi.org/project/google-play-scraper/) untuk mengambil data aplikasi dari Google Play. Informasi seperti judul aplikasi, rating, jumlah ulasan, genre, dan status gratis/berbayar digunakan dalam sistem rekomendasi.
 
-| appId                                          | icon                                                                                          | screenshots                                                                                             | title                          | score     | genre      | price | free | currency | video                                                                                                | videoImage                                                                                     | description                                                        | developer     | installs     |
-|-----------------------------------------------|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------|-----------|------------|-------|------|----------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|---------------|--------------|
-| com.duolingo                                   | ![icon](https://play-lh.googleusercontent.com/vIMymGDz...)                                     | [screenshot](https://play-lh.googleusercontent.com/akiGQip...)                                          | Duolingo: Belajar Bahasa       | 4.775087  | Pendidikan | 0     | True | IDR      | None                                                                                                 | None                                                                                           | Belajar bahasa baru bersama aplikasi pendidikan...                  | Duolingo      | 500.000.000+ |
-| com.google.android.apps.classroom              | ![icon](https://play-lh.googleusercontent.com/w0s3au7c...)                                     | [screenshot](https://play-lh.googleusercontent.com/aJ5Cxjd...)                                          | Google Kelas                   | 3.449997  | Pendidikan | 0     | True | IDR      | None                                                                                                 | None                                                                                           | Classroom memudahkan pelajar dan pengajar untuk...                 | Google LLC    | 100.000.000+ |
-| com.microblink.photomath                       | ![icon](https://play-lh.googleusercontent.com/Ma_HEbK1...)                                     | [screenshot](https://play-lh.googleusercontent.com/OnXcxa_...)                                          | Photomath                      | 4.511481  | Pendidikan | 0     | True | IDR      | [video](https://www.youtube.com/embed/qd37NrZY2_4?ps=p...)                                           | ![videoImage](https://i.ytimg.com/vi/qd37NrZY2_4/hqdefault.jpg)                                 | Pelajari cara memecahkan soal matematika, memecah...                | Google LLC    | 100.000.000+ |
-| com.quizlet.quizletandroid                     | ![icon](https://play-lh.googleusercontent.com/hiQHKRhp...)                                     | [screenshot](https://play-lh.googleusercontent.com/ZFOkNgi...)                                          | Quizlet: flashcard bertenaga AI | 4.730392  | Pendidikan | 0     | True | IDR      | [video](https://www.youtube.com/embed/q-cEib6fAfs?ps=p...)                                           | ![videoImage](https://i.ytimg.com/vi/q-cEib6fAfs/hqdefault.jpg)                                 | Quizlet adalah cara termudah untuk belajar, latihan...              | Quizlet Inc.  | 10.000.000+  |
-| com.rvappstudios.baby.toddler.kids.games.learn | ![icon](https://play-lh.googleusercontent.com/gmTqub2o...)                                     | [screenshot](https://play-lh.googleusercontent.com/QUu0R_v...)                                          | Game Anak: Balita Usia 3-7     | 4.710744  | Edukasi    | 0     | True | IDR      | [video](https://www.youtube.com/embed/nFKJAhfzV5M?ps=p...)                                           | ![videoImage](https://i.ytimg.com/vi/nFKJAhfzV5M/hqdefault.jpg)                                 | Permainan aktivitas anak-anak guna membantu mempercepat perkembangan... | RV AppStudios | 50.000.000+  |
- 
+Dataset yang digunakan dapat diakses di tautan berikut: [kaggle](https://www.kaggle.com/datasets/lava18/google-play-store-apps)  
+Informasi dari dataset dapat dilihat pada tabel dibawah ini:  
 
-Variabel-variabel pada dataset yang akan digunakan adalah sebagai berikut:
-- appId: ID unik dari aplikasi.
-- title: Judul aplikasi.
-- score: Rating atau skor aplikasi.
-- genre: Kategori aplikasi, seperti pendidikan, hiburan, dll.
-- price: Harga aplikasi.
-- free: Status gratis atau berbayar.
-- description: Deskripsi aplikasi.
-- Installs: jumlah penginstallan aplikasi.
+| Jenis                  | Keterangan                                                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Sumber                 | [Google Play Store Apps](https://www.kaggle.com/datasets/lava18/google-play-store-apps)               |
+| Lisensi                | Creative Commons Attribution 3.0 Unported License                                     |
+| Jenis & Ukuran berkas  | ZIP (2 MB)                                                                                                   |  
+| Isi berkas  | googleplaystore.csv & googleplaystore_user_reviews.csv                                                                      |  
+| Jumlah baris dan kolom | 10841 x 13
 
-### Melihat korelasi dan pesebaran beberapa atribut
+		
+Untuk penjelasan mengenai 13 kolom yaitu sebagai berikut:  
+| Field           | Description                                                                                                      |
+|-----------------|------------------------------------------------------------------------------------------------------------------|
+| App             | Nama aplikasi di Google Play Store.                                                                              |
+| Category        | Kategori aplikasi, seperti "ART_AND_DESIGN", "ENTERTAINMENT", dll.                                               |
+| Rating          | Penilaian pengguna dalam bentuk skor, biasanya dari 1 hingga 5.                                                  |
+| Reviews         | Jumlah ulasan dari pengguna.                                                                                     |
+| Size            | Ukuran aplikasi. Biasanya dalam format MB atau KB.                                                               |
+| Installs        | Jumlah pengunduhan aplikasi dalam bentuk angka dengan tanda “+” (misalnya, 10,000+).                             |
+| Type            | Jenis aplikasi: Free atau Paid.                                                                                  |
+| Price           | Harga aplikasi. Untuk aplikasi gratis, biasanya diisi dengan 0.                                                  |
+| Content Rating  | Rating konten, menunjukkan usia pengguna yang disarankan.                                                        |
+| Genres          | Genre atau subkategori aplikasi.                                                                                 |
+| Last Updated    | Tanggal pembaruan terakhir aplikasi.                                                                             |
+| Current Ver     | Versi aplikasi saat ini.                                                                                        |
+| Android Ver     | Versi minimum Android yang diperlukan untuk menjalankan aplikasi.                                               |
 
-#### Installs
+Preview data:
+| App                                                 | Category      | Rating | Reviews | Size | Installs     | Type | Price | Content Rating | Genres                  | Last Updated     | Current Ver           | Android Ver    |
+|-----------------------------------------------------|---------------|--------|---------|------|--------------|------|-------|----------------|-------------------------|------------------|------------------------|----------------|
+| Photo Editor & Candy Camera & Grid & ScrapBook      | ART_AND_DESIGN| 4.1    | 159     | 19M  | 10,000+      | Free | 0     | Everyone       | Art & Design            | January 7, 2018  | 1.0.0                  | 4.0.3 and up   |
+| Coloring book moana                                 | ART_AND_DESIGN| 3.9    | 967     | 14M  | 500,000+     | Free | 0     | Everyone       | Art & Design;Pretend Play| January 15, 2018 | 2.0.0                  | 4.0.3 and up   |
+| U Launcher Lite – FREE Live Cool Themes, Hide ...   | ART_AND_DESIGN| 4.7    | 87510   | 8.7M | 5,000,000+   | Free | 0     | Everyone       | Art & Design            | August 1, 2018   | 1.2.4                  | 4.0.3 and up   |
+| Sketch - Draw & Paint                               | ART_AND_DESIGN| 4.5    | 215644  | 25M  | 50,000,000+  | Free | 0     | Teen           | Art & Design            | June 8, 2018     | Varies with device     | 4.2 and up     |
+| Pixel Draw - Number Art Coloring Book               | ART_AND_DESIGN| 4.3    | 967     | 2.8M | 100,000+     | Free | 0     | Everyone       | Art & Design;Creativity | June 20, 2018    | 1.1                    | 4.4 and up     |
+
+### Kondisi data
+| Column          | Non-Null Count | Dtype   | Missing Count |
+|-----------------|----------------|---------|---------------|
+| App             | 10841          | object  | 0             |
+| Category        | 10841          | object  | 0             |
+| Rating          | 9367           | float64 | 1474          |
+| Reviews         | 10841          | object  | 0             |
+| Size            | 10841          | object  | 0             |
+| Installs        | 10841          | object  | 0             |
+| Type            | 10840          | object  | 1             |
+| Price           | 10841          | object  | 0             |
+| Content Rating  | 10840          | object  | 1             |
+| Genres          | 10841          | object  | 0             |
+| Last Updated    | 10841          | object  | 0             |
+| Current Ver     | 10833          | object  | 8             |
+| Android Ver     | 10838          | object  | 3             |
+
+***
+### Melihat distribusi data
+
+#### Size & Reviews
 
 ![Install Images](images/Installs.png?raw=true)
 
-#### Installs vs Rating
+#### Size & Installs
 
 ![Rating Images](images/Score.png?raw=true)
 
@@ -95,7 +132,12 @@ def get_recommendations_from_query(query, alpha=0.7):
 ```
 
 **Content-Based Filtering:**
-**Deskripsi: **Menggunakan fitur konten dari aplikasi (title, genre, dan deskripsi) untuk merekomendasikan aplikasi yang relevan.
+**Deskripsi: **Menggunakan fitur konten dari aplikasi untuk merekomendasikan aplikasi yang relevan.
+
+**Cosine Similarity:**
+Cosine similarity mengukur sudut kosinus antara dua vektor dalam ruang multidimensi yang merepresentasikan atribut dari aplikasi. Nilai cosine similarity berkisar antara -1 hingga 1, di mana nilai 1 menunjukkan kesamaan yang sempurna, 0 menunjukkan tidak ada hubungan, dan -1 menunjukkan perbedaan total.
+
+Dalam konteks rekomendasi aplikasi, vektor ini dapat berupa representasi fitur seperti kategori, kata kunci, atau deskripsi aplikasi. Jika dua aplikasi memiliki fitur yang mirip, cosine similarity mereka akan tinggi, dan aplikasi tersebut kemungkinan besar akan direkomendasikan kepada pengguna.
 
 **Kelebihan:**
 - Tidak memerlukan data pengguna lain.
@@ -105,7 +147,7 @@ def get_recommendations_from_query(query, alpha=0.7):
 - Keterbatasan dalam mengeksplorasi aplikasi yang tidak dikenal pengguna.
 - Mungkin menghasilkan rekomendasi yang terlalu mirip (serupa).
 
-## Testingg
+## TOP-N RESULT
 
 Hasil testing model menunjukkan index atau urutan aplikasi yang sesuai dengan query yang diberikan
 
