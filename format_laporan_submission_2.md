@@ -189,3 +189,11 @@ Hasil dicoba dengan menggunakan aplikasi ABC Kids - Tracing & Phonics dan HelloT
 | Recall     | 1.0                  |
 | F1-Score   | 0.33333333333333337   |
 
+**Menjawab Problem Statement:** Model ini berhasil menjawab problem statement dengan baik. Sistem rekomendasi berbasis konten mampu memberikan rekomendasi aplikasi yang relevan berdasarkan deskripsi aplikasi dan atribut lainnya, seperti rating dan genre. Selain itu, sistem ini juga dapat memberikan rekomendasi personal tanpa memerlukan data pengguna lain, sesuai dengan problem statement yang kedua.
+
+**Pencapaian Goals:** Sistem ini mencapai goals yang ditetapkan, yaitu mengembangkan sistem rekomendasi berbasis konten yang membantu pengguna menemukan aplikasi sesuai preferensi mereka di Play Store. Model menggunakan TF-IDF untuk ekstraksi fitur deskripsi aplikasi dan cosine similarity untuk menghitung kesamaan, memungkinkan pengguna mendapatkan aplikasi yang mirip dengan minat mereka.
+
+**Dampak Solusi Terhadap Bisnis:** Solusi yang dirancang memiliki dampak positif pada bisnis. Sistem ini meningkatkan user experience dengan memberikan rekomendasi yang relevan, berpotensi meningkatkan konversi aplikasi yang diunduh, serta mengurangi ketergantungan pada data pengguna lain, yang penting untuk menjaga privasi pengguna dan mematuhi regulasi.
+
+**Ruang Perbaikan:** Meskipun berhasil, masih ada ruang untuk meningkatkan variasi rekomendasi agar tidak terlalu mirip satu sama lain, dan meningkatkan nilai Precision untuk memastikan aplikasi yang direkomendasikan lebih sesuai dengan kebutuhan pengguna. Hal ini akan membantu memperluas cakupan aplikasi yang dapat dieksplorasi oleh pengguna.
+
